@@ -1,0 +1,6 @@
+com\mycompany\chat\multihilo\ClienteBasico.class
+com\mycompany\chat\multihilo\Manejador.class
+com\mycompany\chat\multihilo\ServidorMultihilo.class
+com\mycompany\chat\multihilo\ChatMultihilo.class
+com\mycompany\chat\multihilo\ServidorSecuencial.class
+com\mycompany\chat\multihilo\ClienteChat.class
