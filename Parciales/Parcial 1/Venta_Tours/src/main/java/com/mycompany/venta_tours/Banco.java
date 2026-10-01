@@ -17,7 +17,6 @@ public class Banco extends UnicastRemoteObject implements IBanco {
         Pago resultado = new Pago(false, "", "");
 
         try {
-            // 1. Consultar a ANTIFRAUDE por UDP
             DatagramSocket socket = new DatagramSocket();
             String mensajeUDP = "riesgo:" + pasaporte + "-" + montoUSD;
             byte[] bufEnv = mensajeUDP.getBytes();
@@ -34,11 +33,9 @@ public class Banco extends UnicastRemoteObject implements IBanco {
             String respuestaAntifraude = new String(paqueteRec.getData(), 0, paqueteRec.getLength()).trim();
             socket.close();
 
-            // 2. Validar reglas de negocio
             if (respuestaAntifraude.equals("alto")) {
                 resultado.motivo = "Riesgo alto";
             } else {
-                // Simulacion de saldo (Dato quemado simple)
                 double saldoCliente = 2000.0; 
                 
                 if (saldoCliente >= montoUSD) {

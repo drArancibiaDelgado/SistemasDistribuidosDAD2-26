@@ -6,16 +6,14 @@ import java.rmi.registry.Registry;
 public class Clienteturista {
     public static void main(String[] args) {
         try {
-            // Conectar al servidor Operadora (Puerto 1100)
             Registry registro = LocateRegistry.getRegistry("localhost", 1100);
             IOperadora operadora = (IOperadora) registro.lookup("ServidorOperadora");
 
             System.out.println("Solicitando Tour al Salar de Uyuni...");
             
-            // Dato de prueba (pasaporte Boliviano = descuento)
             String pasaporte = "12345"; 
             String codigoTour = "Salar de Uyuni 3 dias";
-            int personas = 2; // Monto sin descuento = 360. Con descuento = 180.
+            int personas = 2;
             
             Voucher voucher = operadora.ComprarTour(pasaporte, codigoTour, personas);
 

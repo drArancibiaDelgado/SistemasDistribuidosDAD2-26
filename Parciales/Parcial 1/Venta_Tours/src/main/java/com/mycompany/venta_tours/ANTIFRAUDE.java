@@ -16,9 +16,8 @@ public class ANTIFRAUDE {
                 String mensaje = new String(paqueteRecibir.getData(), 0, paqueteRecibir.getLength());
                 System.out.println("ANTIFRAUDE recibio: " + mensaje);
 
-                // Separar la cadena: riesgo:pasaporte-monto
-                String[] partes = mensaje.split(":"); // ["riesgo", "12345-1500.0"]
-                String[] datos = partes[1].split("-"); // ["12345", "1500.0"]
+                String[] partes = mensaje.split(":"); 
+                String[] datos = partes[1].split("-"); 
                 double monto = Double.parseDouble(datos[1]);
 
                 String respuesta = "";
