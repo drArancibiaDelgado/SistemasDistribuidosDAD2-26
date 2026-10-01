@@ -1,59 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.venta_tours;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
-/**
- *
- * @author USUARIO
- */
-public class Clienteturista extends UnicastRemoteObject implements ICliente_turista {
-   
-    
-    public Clienteturista() throws RemoteException{
-         super();
-        
-    }
+public class Clienteturista {
+    public static void main(String[] args) {
+        try {
+            // Conectar al servidor Operadora (Puerto 1100)
+            Registry registro = LocateRegistry.getRegistry("localhost", 1100);
+            IOperadora operadora = (IOperadora) registro.lookup("ServidorOperadora");
 
-    @Override
-    public String Comprar_tour(String pasaporte, String codigoTour, String personas) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        
-        String rptatcp ="";
-        String rptaudp ="";
-        
-        try(Socket tcp = new Socket("localhost",5001);
-                DataOutputStream out =new DataOutputStream(tcp.getOutputStream());
-                DataInputStream in =new DataInputStream(tcp.getInputStream())){
-            out.writeUTF(pasaporte);
-            rptatcp=in.readUTF();
+            System.out.println("Solicitando Tour al Salar de Uyuni...");
             
-        }catch(Exception e){}
-        
-        try(DatagramSocket udp =new DatagramSocket()){
-            byte[] msg=pasaporte.getBytes();
-            DatagramPacket paq = new DatagramPacket(msg, msg.length,InetAddress.getByName("localhost"),5002);
-            udp.send(paq);
+            // Dato de prueba (pasaporte Boliviano = descuento)
+            String pasaporte = "12345"; 
+            String codigoTour = "Salar de Uyuni 3 dias";
+            int personas = 2; // Monto sin descuento = 360. Con descuento = 180.
             
-            byte[] buffer =new byte[1024];
-            DatagramPacket rpta= new DatagramPacket(buffer,buffer.length);
-            udp.receive(rpta);
-            rptaudp = new String(rpta.getData(),0,rpta.getLength());
-            
-        }catch(Exception e){}
-        
-        return rptatcp + "|" + rptaudp;
-        
+            Voucher voucher = operadora.ComprarTour(pasaporte, codigoTour, personas);
+
+            System.out.println("---- VOUCHER DE COMPRA ----");
+            if (voucher.confirmado) {
+                System.out.println("Estado: Confirmado");
+                System.out.println("Codigo de Compra: " + voucher.codigoCompra);
+                System.out.println("Monto Pagado: $" + voucher.montoUSD);
+                System.out.println("Mensaje: " + voucher.motivo);
+            } else {
+                System.out.println("Estado: Rechazado");
+                System.out.println("Motivo del rechazo: " + voucher.motivo);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-            
 }

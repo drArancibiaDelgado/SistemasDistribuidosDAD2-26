@@ -7,10 +7,6 @@ package com.mycompany.venta_tours;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-/**
- *
- * @author USUARIO
- */
-public interface IBanco extends Remote{
-    public String Debitar(String pasaporte,String montoUSD)throws RemoteException;
+public interface IBanco extends Remote {
+    Pago Debitar(String pasaporte, double montoUSD) throws RemoteException;
 }

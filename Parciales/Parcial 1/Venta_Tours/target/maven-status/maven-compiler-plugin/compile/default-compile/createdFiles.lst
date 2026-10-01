@@ -1,2 +1,11 @@
 com\mycompany\venta_tours\Banco.class
+com\mycompany\venta_tours\ServidorMigracion.class
+com\mycompany\venta_tours\Clienteturista.class
 com\mycompany\venta_tours\ANTIFRAUDE.class
+com\mycompany\venta_tours\ManejadorCLienteturista.class
+com\mycompany\venta_tours\Venta_Tours.class
+com\mycompany\venta_tours\IBanco.class
+com\mycompany\venta_tours\ServidorOperadora.class
+com\mycompany\venta_tours\Voucher.class
+com\mycompany\venta_tours\IOperadora.class
+com\mycompany\venta_tours\Pago.class

@@ -1,67 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package com.mycompany.venta_tours;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
-/**
- *
- * @author USUARIO
- */
 public class ServidorMigracion {
-    int puerto = 5001;
-    ServerSocket serverSocket;
-
-    /**
-     * @param args the command line arguments
-     */
-    
-    public ServidorMigracion(){
-        try{
-            this.serverSocket = new ServerSocket(puerto);
-        }
-        catch(IOException e){
-            System.err.println("Error al inicar servidor"+e.getMessage());
-                
-        }
+    public static void main(String[] args) {
+        try {
+            ServerSocket servidor = new ServerSocket(5000);
+            System.out.println("Servidor MIGRACION (TCP) escuchando en puerto 5000...");
             
-    }
-    
-    public void iniciar(){
-        new Thread(()->{
-            try{
-                while(true){
-                    Socket clientSocket = serverSocket.accept();
-                    ManejadorCLienteturista manejador = new ManejadorCLienteturista(clientSocket);
-                    manejador.procesar();
-                    
+            while (true) {
+                Socket cliente = servidor.accept();
+                BufferedReader in = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+                PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
+
+                String peticion = in.readLine();
+                System.out.println("MIGRACION recibio: " + peticion);
+
+                // Logica simple con if/else
+                if (peticion.equals("pasaporte:12345")) {
+                    out.println("BOLIVIA");
+                } else if (peticion.equals("pasaporte:99999")) {
+                    out.println("ARGENTINA");
+                } else {
+                    out.println("invalido");
                 }
                 
+                cliente.close();
             }
-            catch(IOException e){
-                System.err.println("Error aceptando cliente"+e.getMessage());
-            }
-        }).start();
-    }
-    public static void main(String[] args) {
-        // TODO code application logic here
-        ServidorMigracion servidor= new ServidorMigracion();
-        servidor.iniciar();
-        try{
-            Thread.currentThread().join();
-            
-        }catch(InterruptedException e){
+        } catch (Exception e) {
             e.printStackTrace();
-            
         }
-        
-        
-   
-        
     }
-    
 }

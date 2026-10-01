@@ -7,11 +7,6 @@ package com.mycompany.venta_tours;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-/**
- *
- * @author USUARIO
- */
-public interface ICliente_turista extends Remote{
-    public String Comprar_tour(String pasaporte,String codigoTour, String personas)throws RemoteException;
-    
+public interface IOperadora extends Remote {
+    Voucher ComprarTour(String pasaporte, String codigoTour, int personas) throws RemoteException;
 }
